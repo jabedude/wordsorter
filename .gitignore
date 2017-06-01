@@ -1,0 +1,7 @@
+ws
+requirements.txt
+*.swp
+*.o
+a.out
+*test*
+.gdb*
