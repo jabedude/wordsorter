@@ -49,29 +49,29 @@ int main (int argc, char **argv)
     printf("DEBUG: number of files is: %d\n", argc - optind);
 
     if (argc - optind) {
-        read_words(&argv[optind], argc - optind);
+        for (int i = argc - optind; i < argc; i++) {
+            read_file(argv[i]);
+        }
     }
 
     return 0;
 }
 
-char **read_words(char **files, int f_no)
+char *read_file(char *file)
 {
     FILE *fp;
     size_t file_sz = 0;
-    char **words = NULL;
+    char *words = NULL;
 
-    for (int i = 0; i < f_no; i++) {
-        printf("DEBUG: filenames: %s\n", files[i]);
-        fp = fopen(files[i], "r");
-        if (!fp)
-            return NULL;
-        fseek(fp, 0, SEEK_END);
-        file_sz = ftell(fp);
-        printf("DEBUG: file %s size is: %ld\n", files[i], file_sz);
-        rewind(fp);
-        fclose(fp);
-    }
+    printf("DEBUG: filename: %s\n", file);
+    fp = fopen(file, "r");
+    if (!fp)
+        return NULL;
+    fseek(fp, 0, SEEK_END);
+    file_sz = ftell(fp);
+    printf("DEBUG: file %s size is: %ld\n", file, file_sz);
+    rewind(fp);
+    fclose(fp);
 
     return words;
 }
