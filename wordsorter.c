@@ -45,7 +45,35 @@ int main (int argc, char **argv)
         return 0;
     }
 
+    printf("DEBUG: optind argv is: %s\n", argv[optind]);
+    printf("DEBUG: number of files is: %d\n", argc - optind);
+
+    if (argc - optind) {
+        read_words(&argv[optind], argc - optind);
+    }
+
     return 0;
+}
+
+char **read_words(char **files, int f_no)
+{
+    FILE *fp;
+    size_t file_sz = 0;
+    char **words = NULL;
+
+    for (int i = 0; i < f_no; i++) {
+        printf("DEBUG: filenames: %s\n", files[i]);
+        fp = fopen(files[i], "r");
+        if (!fp)
+            return NULL;
+        fseek(fp, 0, SEEK_END);
+        file_sz = ftell(fp);
+        printf("DEBUG: file %s size is: %ld\n", files[i], file_sz);
+        rewind(fp);
+        fclose(fp);
+    }
+
+    return words;
 }
 
 void usage(char *p_name)
