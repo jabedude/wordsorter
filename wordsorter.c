@@ -77,9 +77,25 @@ int main (int argc, char **argv)
         tmp++;
     }
 
+    printf("DEBUG: tmp is %d\n", tmp);
+    qsort(toks, tmp, sizeof(char *), sort_str);
+
+    tmp = 0;
+    while (toks[tmp]) {
+        printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+        tmp++;
+    }
+
     free(toks);
     free(all_words);
     return 0;
+}
+
+int sort_str(const void *str1, const void *str2)
+{
+    const char *r1 = *(const char **) str1;
+    const char *r2 = *(const char **) str2;
+    return strcmp(r1, r2);
 }
 
 char **tok_strings(char *words)
