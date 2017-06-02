@@ -84,6 +84,8 @@ int main (int argc, char **argv)
         qsort(toks, tmp, sizeof(char *), scrab_sort);
     else if (l_flg)
         qsort(toks, tmp, sizeof(char *), len_sort);
+    else if (n_flg)
+        qsort(toks, tmp, sizeof(char *), num_sort);
     else
         qsort(toks, tmp, sizeof(char *), sort_str);
 
@@ -126,6 +128,13 @@ int main (int argc, char **argv)
     free(toks);
     free(all_words);
     return 0;
+}
+
+int num_sort(const void *str1, const void *str2)
+{
+    const int r1 = atoi(*(const char **) str1);
+    const int r2 = atoi(*(const char **) str2);
+    return (r1 > r2);
 }
 
 int len_sort(const void *str1, const void *str2)

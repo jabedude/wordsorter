@@ -11,6 +11,7 @@ char *read_file(char *file);
 char **tok_strings(char *words);
 int sort_str(const void *str1, const void *str2);
 int len_sort(const void *str1, const void *str2);
+int num_sort(const void *str1, const void *str2);
 int scrab_sort(const void *str1, const void *str2);
 
 #endif
