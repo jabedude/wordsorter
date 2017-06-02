@@ -31,12 +31,18 @@ int main (int argc, char **argv)
                 break;
             case 'n':
                 n_flg = true;
+                s_flg = false;
+                l_flg = false;
                 break;
             case 'l':
                 l_flg = true;
+                n_flg = false;
+                s_flg = false;
                 break;
             case 's':
                 s_flg = true;
+                l_flg = false;
+                n_flg = false;
                 break;
             case 'a':
                 a_flg = true;
