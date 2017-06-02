@@ -38,7 +38,7 @@ int main (int argc, char **argv)
                 a_flg = true;
                 break;
             case 'u':
-                a_flg = true;
+                u_flg = true;
                 break;
             case 'h':
                 h_flg = true;
@@ -72,10 +72,11 @@ int main (int argc, char **argv)
     }
 
     toks = tok_strings(all_words);
-    int tmp = 0;
+    int tmp = 0, len = 0;
     while (toks[tmp]) {
         printf("DEBUG: tok %d is: %s\n", tmp, toks[tmp]);
         tmp++;
+        len++;
     }
 
     printf("DEBUG: tmp is %d\n", tmp);
@@ -86,17 +87,39 @@ int main (int argc, char **argv)
     else
         qsort(toks, tmp, sizeof(char *), sort_str);
 
-    if (r_flg) {
-        tmp--;
-        while (tmp >= 0) {
-            printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+    if (u_flg) {
+        if (r_flg) {
             tmp--;
+            while (tmp >= 0) {
+                if (tmp + 1 == len)
+                    printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+                else if (strcmp(toks[tmp], toks[tmp + 1]))
+                    printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+                tmp--;
+            }
+        } else {
+            tmp = 0;
+            while (toks[tmp]) {
+                if (tmp + 1 == len)
+                    printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+                else if (strcmp(toks[tmp], toks[tmp + 1]))
+                    printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+                tmp++;
+            }
         }
     } else {
-        tmp = 0;
-        while (toks[tmp]) {
-            printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
-            tmp++;
+        if (r_flg) {
+            tmp--;
+            while (tmp >= 0) {
+                printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+                tmp--;
+            }
+        } else {
+            tmp = 0;
+            while (toks[tmp]) {
+                printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+                tmp++;
+            }
         }
     }
 
