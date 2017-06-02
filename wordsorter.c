@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -78,7 +79,10 @@ int main (int argc, char **argv)
     }
 
     printf("DEBUG: tmp is %d\n", tmp);
-    qsort(toks, tmp, sizeof(char *), sort_str);
+    if (s_flg)
+        qsort(toks, tmp, sizeof(char *), scrab_sort);
+    else
+        qsort(toks, tmp, sizeof(char *), sort_str);
 
     if (r_flg) {
         tmp--;
@@ -94,10 +98,63 @@ int main (int argc, char **argv)
         }
     }
 
-
     free(toks);
     free(all_words);
     return 0;
+}
+
+int scrab_sort(const void *str1, const void *str2)
+{
+    int scr1 = 0, scr2 = 0;
+    char c;
+    const char *r1 = *(const char **) str1;
+    const char *r2 = *(const char **) str2;
+    printf("DEBUG: r1 is %s\n", r1);
+
+    for (int i = 0; i < strlen(r1); i++) {
+        c = tolower(r1[i]);
+        if (c == 'e' || c == 'a' || c == 'i' || c == 'o' || c == 'n' || 
+            c == 'r' || c == 't' || c == 'l' || c == 's' || c == 'u')
+                scr1++;
+        else if (c == 'd' || c == 'g')
+            scr1 += 2;
+        else if (c == 'b' || c == 'c' || c == 'm' || c == 'p')
+            scr1 += 3;
+        else if (c == 'f' || c == 'h' || c == 'v' || c == 'w' || c == 'y')
+            scr1 += 4;
+        else if (c == 'k')
+            scr1 += 5;
+        else if (c == 'j' || c == 'x')
+            scr1 += 8;
+        else if (c == 'q' || c == 'z')
+            scr1 += 10;
+        else
+            scr1 += 0;
+    }
+    for (int i = 0; i < strlen(r2); i++) {
+        c = tolower(r2[i]);
+        if (c == 'e' || c == 'a' || c == 'i' || c == 'o' || c == 'n' || 
+            c == 'r' || c == 't' || c == 'l' || c == 's' || c == 'u')
+                scr2++;
+        else if (c == 'd' || c == 'g')
+            scr2 += 2;
+        else if (c == 'b' || c == 'c' || c == 'm' || c == 'p')
+            scr2 += 3;
+        else if (c == 'f' || c == 'h' || c == 'v' || c == 'w' || c == 'y')
+            scr2 += 4;
+        else if (c == 'k')
+            scr2 += 5;
+        else if (c == 'j' || c == 'x')
+            scr2 += 8;
+        else if (c == 'q' || c == 'z')
+            scr2 += 10;
+        else
+            scr2 += 0;
+    }
+
+    printf("DEBUG: Score %s is %d. Score %s is %d\n", r1, scr1, r2, scr2);
+
+    return (scr1 > scr2);
 }
 
 int sort_str(const void *str1, const void *str2)
