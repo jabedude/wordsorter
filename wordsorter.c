@@ -80,11 +80,20 @@ int main (int argc, char **argv)
     printf("DEBUG: tmp is %d\n", tmp);
     qsort(toks, tmp, sizeof(char *), sort_str);
 
-    tmp = 0;
-    while (toks[tmp]) {
-        printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
-        tmp++;
+    if (r_flg) {
+        tmp--;
+        while (tmp >= 0) {
+            printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+            tmp--;
+        }
+    } else {
+        tmp = 0;
+        while (toks[tmp]) {
+            printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+            tmp++;
+        }
     }
+
 
     free(toks);
     free(all_words);
