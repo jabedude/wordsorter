@@ -43,6 +43,9 @@ int main (int argc, char **argv)
             case 'h':
                 h_flg = true;
                 break;
+            default:
+                usage(argv[0]);
+                return 1;
         }
     }
 
