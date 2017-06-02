@@ -50,15 +50,18 @@ int main (int argc, char **argv)
         usage(argv[0]);
         return 0;
     }
-
+#ifdef DEBUG
     printf("DEBUG: optind argv is: %s\n", argv[optind]);
     printf("DEBUG: number of files is: %d\n", argc - optind);
+#endif
 
     if (argc - optind) {
         for (int i = optind; i < argc; i++) {
             f_words = read_file(argv[i]);
+#ifdef DEBUG
             printf("DEBUG: File %s contains %s\n", argv[i], f_words);
             printf("DEBUG: Strlen is %ld\n", strlen(f_words));
+#endif
             tot_sz += strlen(f_words);
             if (all_words) {
                 all_words = (char *) realloc(all_words, sizeof(char) * tot_sz + 1);
@@ -74,12 +77,16 @@ int main (int argc, char **argv)
     toks = tok_strings(all_words);
     int tmp = 0, len = 0;
     while (toks[tmp]) {
+#ifdef DEBUG
         printf("DEBUG: tok %d is: %s\n", tmp, toks[tmp]);
+#endif
         tmp++;
         len++;
     }
 
+#ifdef DEBUG
     printf("DEBUG: tmp is %d\n", tmp);
+#endif
     if (s_flg)
         qsort(toks, tmp, sizeof(char *), scrab_sort);
     else if (l_flg)
@@ -94,18 +101,18 @@ int main (int argc, char **argv)
             tmp--;
             while (tmp >= 0) {
                 if (tmp + 1 == len)
-                    printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+                    printf("%s\n", toks[tmp]);
                 else if (strcmp(toks[tmp], toks[tmp + 1]))
-                    printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+                    printf("%s\n", toks[tmp]);
                 tmp--;
             }
         } else {
             tmp = 0;
             while (toks[tmp]) {
                 if (tmp + 1 == len)
-                    printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+                    printf("%s\n", toks[tmp]);
                 else if (strcmp(toks[tmp], toks[tmp + 1]))
-                    printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+                    printf("%s\n", toks[tmp]);
                 tmp++;
             }
         }
@@ -113,13 +120,13 @@ int main (int argc, char **argv)
         if (r_flg) {
             tmp--;
             while (tmp >= 0) {
-                printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+                printf("%s\n", toks[tmp]);
                 tmp--;
             }
         } else {
             tmp = 0;
             while (toks[tmp]) {
-                printf("DEBUG: tok after sort %d is: %s\n", tmp, toks[tmp]);
+                printf("%s\n", toks[tmp]);
                 tmp++;
             }
         }
@@ -160,9 +167,11 @@ int scrab_sort(const void *str1, const void *str2)
     char c;
     const char *r1 = *(const char **) str1;
     const char *r2 = *(const char **) str2;
+#ifdef DEBUG
     printf("DEBUG: r1 is %s\n", r1);
+#endif
 
-    for (int i = 0; i < strlen(r1); i++) {
+    for (size_t i = 0; i < strlen(r1); i++) {
         c = tolower(r1[i]);
         if (c == 'e' || c == 'a' || c == 'i' || c == 'o' || c == 'n' || 
             c == 'r' || c == 't' || c == 'l' || c == 's' || c == 'u')
@@ -182,7 +191,7 @@ int scrab_sort(const void *str1, const void *str2)
         else
             scr1 += 0;
     }
-    for (int i = 0; i < strlen(r2); i++) {
+    for (size_t i = 0; i < strlen(r2); i++) {
         c = tolower(r2[i]);
         if (c == 'e' || c == 'a' || c == 'i' || c == 'o' || c == 'n' || 
             c == 'r' || c == 't' || c == 'l' || c == 's' || c == 'u')
@@ -203,7 +212,9 @@ int scrab_sort(const void *str1, const void *str2)
             scr2 += 0;
     }
 
+#ifdef DEBUG
     printf("DEBUG: Score %s is %d. Score %s is %d\n", r1, scr1, r2, scr2);
+#endif
 
     return (scr1 > scr2);
 }
@@ -227,10 +238,14 @@ char **tok_strings(char *words)
         pos++;
 
         if (pos >= buffsz) {
+#ifdef DEBUG
             printf("DEBUG: bufsz is: %d\n", buffsz);
             printf("DEBUG: pos is: %d\n", pos);
+#endif
             buffsz += buffsz;
+#ifdef DEBUG
             printf("DEBUG: bufsz before realloc is: %d\n", buffsz);
+#endif
             toks = (char **) realloc(toks, buffsz);
         }
         tok = strtok(NULL, " ");
@@ -247,13 +262,17 @@ char *read_file(char *file)
     char *words = NULL;
     int pos = 0;
 
+#ifdef DEBUG
     printf("DEBUG: filename: %s\n", file);
+#endif
     fp = fopen(file, "r");
     if (!fp)
         return NULL;
     fseek(fp, 0, SEEK_END);
     file_sz = ftell(fp);
+#ifdef DEBUG
     printf("DEBUG: file %s size is: %ld\n", file, file_sz);
+#endif
     rewind(fp);
     words = (char *) malloc(sizeof(char) * (file_sz + 1));
     while (true) {

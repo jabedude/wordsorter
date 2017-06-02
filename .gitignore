@@ -3,5 +3,5 @@ requirements.txt
 *.swp
 *.o
 a.out
-*test*
+test
 .gdb*
