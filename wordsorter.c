@@ -81,6 +81,8 @@ int main (int argc, char **argv)
     printf("DEBUG: tmp is %d\n", tmp);
     if (s_flg)
         qsort(toks, tmp, sizeof(char *), scrab_sort);
+    else if (l_flg)
+        qsort(toks, tmp, sizeof(char *), len_sort);
     else
         qsort(toks, tmp, sizeof(char *), sort_str);
 
@@ -101,6 +103,23 @@ int main (int argc, char **argv)
     free(toks);
     free(all_words);
     return 0;
+}
+
+int len_sort(const void *str1, const void *str2)
+{
+    const char *r1 = *(const char **) str1;
+    const char *r2 = *(const char **) str2;
+    size_t one_sz = strlen(r1);
+    size_t two_sz = strlen(r2);
+
+    return (one_sz > two_sz);
+}
+
+int sort_str(const void *str1, const void *str2)
+{
+    const char *r1 = *(const char **) str1;
+    const char *r2 = *(const char **) str2;
+    return strcmp(r1, r2);
 }
 
 int scrab_sort(const void *str1, const void *str2)
@@ -155,13 +174,6 @@ int scrab_sort(const void *str1, const void *str2)
     printf("DEBUG: Score %s is %d. Score %s is %d\n", r1, scr1, r2, scr2);
 
     return (scr1 > scr2);
-}
-
-int sort_str(const void *str1, const void *str2)
-{
-    const char *r1 = *(const char **) str1;
-    const char *r2 = *(const char **) str2;
-    return strcmp(r1, r2);
 }
 
 char **tok_strings(char *words)
