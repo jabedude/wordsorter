@@ -21,6 +21,10 @@ int main (int argc, char **argv)
         switch (opt) {
             case 'c':
                 c_val = atoi(optarg);
+                if (!c_val) {
+                    usage(argv[0]);
+                    return 1;
+                }
                 break;
             case 'r':
                 r_flg = !r_flg;
@@ -103,6 +107,8 @@ int main (int argc, char **argv)
         if (r_flg) {
             tmp--;
             while (tmp >= 0) {
+                if (c_val && (tmp + 1 == len - c_val))
+                    break;
                 if (tmp + 1 == len)
                     printf("%s\n", toks[tmp]);
                 else if (strcmp(toks[tmp], toks[tmp + 1]))
@@ -116,6 +122,8 @@ int main (int argc, char **argv)
                     printf("%s\n", toks[tmp]);
                 else if (strcmp(toks[tmp], toks[tmp + 1]))
                     printf("%s\n", toks[tmp]);
+                if (c_val && tmp == c_val)
+                    break;
                 tmp++;
             }
         }
@@ -123,12 +131,16 @@ int main (int argc, char **argv)
         if (r_flg) {
             tmp--;
             while (tmp >= 0) {
+                if (c_val && (tmp + 1 == len - c_val))
+                    break;
                 printf("%s\n", toks[tmp]);
                 tmp--;
             }
         } else {
             tmp = 0;
             while (toks[tmp]) {
+                if (c_val && tmp == c_val)
+                    break;
                 printf("%s\n", toks[tmp]);
                 tmp++;
             }
@@ -297,7 +309,7 @@ void usage(char *p_name)
 {
     fprintf(stderr,
             "Usage: %s [OPTIONS] ... [FILE]\n"
-            "-c\t<number>\n"
+            "-c\t<number of lines to print>\n"
             "-r\tprint in reverse order\n"
             "-n\tsort words as if they were numbers\n"
             "-l\tsort by length\n"
