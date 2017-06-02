@@ -15,7 +15,7 @@ int main (int argc, char **argv)
     size_t tot_sz = 0;
     int opt = 0;
     int c_val = 0;
-    bool r_flg = 0, n_flg = 0, l_flg = 0, s_flg = 0, a_flg = 0, u_flg = 0, h_flg = 0;
+    bool r_flg = 0, n_flg = 0, l_flg = 0, s_flg = 0, a_flg = 1, u_flg = 0, h_flg = 0;
 
     while ((opt = getopt(argc, argv, OPTS)) != -1) {
         switch (opt) {
@@ -33,19 +33,25 @@ int main (int argc, char **argv)
                 n_flg = true;
                 s_flg = false;
                 l_flg = false;
+                a_flg = false;
                 break;
             case 'l':
                 l_flg = true;
                 n_flg = false;
                 s_flg = false;
+                a_flg = false;
                 break;
             case 's':
                 s_flg = true;
                 l_flg = false;
                 n_flg = false;
+                a_flg = false;
                 break;
             case 'a':
                 a_flg = true;
+                s_flg = false;
+                l_flg = false;
+                n_flg = false;
                 break;
             case 'u':
                 u_flg = true;
@@ -109,8 +115,12 @@ int main (int argc, char **argv)
         qsort(toks, tmp, sizeof(char *), len_sort);
     else if (n_flg)
         qsort(toks, tmp, sizeof(char *), num_sort);
-    else
+    else if (a_flg)
         qsort(toks, tmp, sizeof(char *), str_sort);
+    else {
+        usage(argv[0]);
+        return 1;
+    }
 
     if (u_flg) {
         if (r_flg) {
