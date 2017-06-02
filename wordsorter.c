@@ -110,7 +110,7 @@ int main (int argc, char **argv)
     else if (n_flg)
         qsort(toks, tmp, sizeof(char *), num_sort);
     else
-        qsort(toks, tmp, sizeof(char *), sort_str);
+        qsort(toks, tmp, sizeof(char *), str_sort);
 
     if (u_flg) {
         if (r_flg) {
@@ -213,7 +213,7 @@ int len_sort(const void *str1, const void *str2)
     return (one_sz > two_sz);
 }
 
-int sort_str(const void *str1, const void *str2)
+int str_sort(const void *str1, const void *str2)
 {
     const char *r1 = *(const char **) str1;
     const char *r2 = *(const char **) str2;
