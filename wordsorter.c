@@ -10,6 +10,7 @@ int main (int argc, char **argv)
 {
     char *f_words;
     char *all_words = NULL;
+    char **toks = NULL;
     size_t tot_sz = 0;
     int opt = 0;
     int c_val = 0;
@@ -68,10 +69,39 @@ int main (int argc, char **argv)
             free(f_words);
         }
     }
-    printf("DEBUG: all_words contains: %s\n", all_words);
-    printf("DEBUG: strlen of all_words: %ld\n", strlen(all_words));
+
+    toks = tok_strings(all_words);
+    int tmp = 0;
+    while (toks[tmp]) {
+        printf("DEBUG: tok %d is: %s\n", tmp, toks[tmp]);
+        tmp++;
+    }
+
+    free(toks);
     free(all_words);
     return 0;
+}
+
+char **tok_strings(char *words)
+{
+    int buffsz = 64;
+    char **toks = (char **) malloc(sizeof(char**) * buffsz);
+    char *tok;
+    int pos = 0;
+
+    tok = strtok(words, " ");
+    while (tok != NULL) {
+        toks[pos] = tok;
+        pos++;
+
+        if (pos >= buffsz) {
+            buffsz += buffsz;
+            toks = (char **) realloc(toks, buffsz);
+        }
+        tok = strtok(NULL, " ");
+    }
+    toks[pos] = NULL;
+    return toks;
 }
 
 char *read_file(char *file)
