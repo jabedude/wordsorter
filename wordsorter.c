@@ -14,6 +14,7 @@ int main (int argc, char **argv)
     char **toks = NULL;
     size_t tot_sz = 0;
     int opt = 0;
+    int prints = 0;
     int c_val = 0;
     bool r_flg = 0, n_flg = 0, l_flg = 0, s_flg = 0, a_flg = 1, u_flg = 0, p_flg = 0, h_flg = 0;
 
@@ -129,22 +130,30 @@ int main (int argc, char **argv)
         if (r_flg) {
             tmp--;
             while (tmp >= 0) {
-                if (c_val && (tmp + 1 == len - c_val))
+                if (c_val && prints == c_val)
                     break;
-                if (tmp + 1 == len)
+                if (tmp + 1 == len) {
                     printf("%s\n", toks[tmp]);
-                else if (strcmp(toks[tmp], toks[tmp + 1]))
+                    prints++;
+                }
+                else if (strcmp(toks[tmp], toks[tmp + 1])) {
                     printf("%s\n", toks[tmp]);
+                    prints++;
+                }
                 tmp--;
             }
         } else {
             tmp = 0;
             while (toks[tmp]) {
-                if (tmp + 1 == len)
+                if (tmp + 1 == len) {
                     printf("%s\n", toks[tmp]);
-                else if (strcmp(toks[tmp], toks[tmp + 1]))
+                    prints++;
+                }
+                else if (strcmp(toks[tmp], toks[tmp + 1])) {
                     printf("%s\n", toks[tmp]);
-                if (c_val && tmp == c_val)
+                    prints++;
+                }
+                if (c_val && prints == c_val)
                     break;
                 tmp++;
             }
