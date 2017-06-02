@@ -23,7 +23,7 @@ int main (int argc, char **argv)
                 c_val = atoi(optarg);
                 break;
             case 'r':
-                r_flg = true;
+                r_flg = !r_flg;
                 break;
             case 'n':
                 n_flg = true;
