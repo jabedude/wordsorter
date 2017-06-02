@@ -300,5 +300,6 @@ void usage(char *p_name)
             "-l\tsort by length\n"
             "-s\tsort by score in scrabble\n"
             "-a\tsort lexographically\n"
-            "-u\tonly print unique words\n", p_name);
+            "-u\tonly print unique words\n"
+            "-h\tprint this help message\n", p_name);
 }
