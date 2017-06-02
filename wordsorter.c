@@ -15,7 +15,7 @@ int main (int argc, char **argv)
     size_t tot_sz = 0;
     int opt = 0;
     int c_val = 0;
-    bool r_flg = 0, n_flg = 0, l_flg = 0, s_flg = 0, a_flg = 1, u_flg = 0, h_flg = 0;
+    bool r_flg = 0, n_flg = 0, l_flg = 0, s_flg = 0, a_flg = 1, u_flg = 0, p_flg = 0, h_flg = 0;
 
     while ((opt = getopt(argc, argv, OPTS)) != -1) {
         switch (opt) {
@@ -55,6 +55,9 @@ int main (int argc, char **argv)
                 break;
             case 'u':
                 u_flg = true;
+                break;
+            case 'p':
+                p_flg = true;
                 break;
             case 'h':
                 h_flg = true;
@@ -96,7 +99,7 @@ int main (int argc, char **argv)
         all_words = read_stdin();
     }
 
-    toks = tok_strings(all_words);
+    toks = tok_strings(all_words, p_flg);
     int tmp = 0, len = 0;
     while (toks[tmp]) {
 #ifdef DEBUG
@@ -288,7 +291,7 @@ int scrab_sort(const void *str1, const void *str2)
     return (scr1 > scr2);
 }
 
-char **tok_strings(char *words)
+char **tok_strings(char *words, bool p_flg)
 {
     int buffsz = 1;
 
@@ -303,6 +306,10 @@ char **tok_strings(char *words)
 
     tok = strtok(words, " ");
     while (tok != NULL) {
+        if (p_flg) {
+            if (ispunct(tok[strlen(tok) - 1]))
+                tok[strlen(tok) - 1] = '\0';
+        }
         toks[pos] = tok;
         pos++;
 
