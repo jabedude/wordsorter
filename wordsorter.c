@@ -201,7 +201,13 @@ int scrab_sort(const void *str1, const void *str2)
 
 char **tok_strings(char *words)
 {
-    int buffsz = 64;
+    int buffsz = 1;
+
+    for (size_t i = 0;  i < strlen(words); i++) {
+        if (isspace(words[i]))
+            buffsz++;
+    }
+
     char **toks = (char **) malloc(sizeof(char**) * buffsz);
     char *tok;
     int pos = 0;
@@ -212,7 +218,10 @@ char **tok_strings(char *words)
         pos++;
 
         if (pos >= buffsz) {
+            printf("DEBUG: bufsz is: %d\n", buffsz);
+            printf("DEBUG: pos is: %d\n", pos);
             buffsz += buffsz;
+            printf("DEBUG: bufsz before realloc is: %d\n", buffsz);
             toks = (char **) realloc(toks, buffsz);
         }
         tok = strtok(NULL, " ");
