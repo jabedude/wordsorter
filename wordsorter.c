@@ -68,6 +68,7 @@ int main (int argc, char **argv)
     printf("DEBUG: number of files is: %d\n", argc - optind);
 #endif
 
+    /* If user passed filenames on command line */
     if (argc - optind) {
         for (int i = optind; i < argc; i++) {
             f_words = read_file(argv[i]);
@@ -85,6 +86,8 @@ int main (int argc, char **argv)
             }
             free(f_words);
         }
+    } else {
+        all_words = read_stdin();
     }
 
     toks = tok_strings(all_words);
@@ -156,6 +159,41 @@ int main (int argc, char **argv)
     free(toks);
     free(all_words);
     return 0;
+}
+
+char *read_stdin(void)
+{
+    int buffsz = 64;
+    char *words = (char *) malloc(sizeof(char) * buffsz);
+    int p, pos = 0;
+
+    if (!words) {
+        fprintf(stderr, "Malloc error!\n");
+        return NULL;
+    }
+
+    while (true) {
+        p = getchar();
+        if (p == EOF) {
+            words[pos] = '\0';
+            return words;
+        } else if (p == '\t' || p == '\n') {
+            words[pos] = ' ';
+        } else {
+            words[pos] = p;
+        }
+        pos++;
+
+        if (pos >= buffsz) {
+            buffsz += buffsz;
+            words = (char *) realloc(words, buffsz);
+
+            if (!words) {
+                fprintf(stderr, "Malloc error!\n");
+                return NULL;
+            }
+        }
+    }
 }
 
 int num_sort(const void *str1, const void *str2)
