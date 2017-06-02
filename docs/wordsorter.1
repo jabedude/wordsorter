@@ -1,0 +1,45 @@
+.TH WS 1 "02 June 2017" "1.0" "ws man page"
+
+.SH NAME
+ws - word sort files and text
+
+.SH SYNOPSIS
+.B ws [
+.I OPTIONS
+.B ]
+...
+.B [
+.I FILES
+.B ]
+
+.SH DESCRIPTION
+This manual documents the
+.B ws
+tool.
+.B ws
+sorts the contents of files. If no files are specified, the program reads from stdin until EOF is given.
+
+.SH OPTIONS
+.BR \-c " " \fINUM\fR
+number of words to print.
+.PP
+.BR \-r " "
+prints words in reverse order.
+.PP
+.BR \-n " "
+sorts words in numeric order.
+.PP
+.BR \-l " "
+sorts words by length.
+.PP
+.BR \-s " "
+sorts words by Scrabble® score.
+.PP
+.BR \-a " "
+sorts words lexicographically [default].
+.PP
+.BR \-u " "
+print unique words only.
+.PP
+.BR \-h " "
+print \fBwc\fR help menu.
